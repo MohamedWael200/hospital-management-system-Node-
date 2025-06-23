@@ -3,7 +3,7 @@ const Doctor = require("../models/Doctor");
 
 const createPatient = async (req , res) => {
     try {
-        const { medicalHistory , allergies , bloodType } = req.body;
+        const { medicalHistory , allergies , bloodType , userId} = req.body;
 
         if (!medicalHistory || !allergies || !bloodType) {
             return res.status(400).json({ message: "All fields are required" });
@@ -13,7 +13,7 @@ const createPatient = async (req , res) => {
             medicalHistory ,
             allergies,
             bloodType,
-            userId : req.user.id
+            userId,
         })
 
         await newPatient.save();
