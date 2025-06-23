@@ -9,6 +9,7 @@ const appointmentRoute = require("./Routes/appointmentRoute");
 const VisitReportRoute = require("./Routes/visitReportRoute");
 const LapReportRoute = require("./Routes/lapReportRoute");
 const roomRoute = require("./Routes/roomRoute");
+const invoiceRoute = require("./Routes/invoiceRoute");
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/appointment' , appointmentRoute);
 app.use('/VisitReport' , VisitReportRoute);
 app.use('/LapReport' , LapReportRoute);
 app.use('/room' , roomRoute);
+app.use('/invoice' , invoiceRoute);
 
 mongoose
     .connect(process.env.MONGO_URI)
