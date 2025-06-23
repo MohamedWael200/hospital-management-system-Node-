@@ -8,6 +8,7 @@ const patientRoute = require("./Routes/patientRoute");
 const appointmentRoute = require("./Routes/appointmentRoute");
 const VisitReportRoute = require("./Routes/visitReportRoute");
 const LapReportRoute = require("./Routes/lapReportRoute");
+const roomRoute = require("./Routes/roomRoute");
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use('/patient' , patientRoute);
 app.use('/appointment' , appointmentRoute);
 app.use('/VisitReport' , VisitReportRoute);
 app.use('/LapReport' , LapReportRoute);
+app.use('/room' , roomRoute);
 
 mongoose
     .connect(process.env.MONGO_URI)
