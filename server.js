@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const http = require("http");
+const { Server } = require("socket.io");
+
 const authRoute = require("./Routes/authRoute");
 const userRoute = require("./Routes/userRoute");
 const doctorRoute = require("./Routes/doctorRoute");
@@ -10,10 +13,14 @@ const VisitReportRoute = require("./Routes/visitReportRoute");
 const LapReportRoute = require("./Routes/lapReportRoute");
 const roomRoute = require("./Routes/roomRoute");
 const invoiceRoute = require("./Routes/invoiceRoute");
+const notificationsRoute = require("./Routes/notifications Route");
 
 
 const app = express();
 const port = process.env.PORT || 3000;
+const server = http.createServer(app);
+
+// require("./cron/DailyPatiantReport"); // ← ده اسم الملف اللي فيه الكرون
 
 
 app.use(express.json());
@@ -29,6 +36,7 @@ app.use('/VisitReport' , VisitReportRoute);
 app.use('/LapReport' , LapReportRoute);
 app.use('/room' , roomRoute);
 app.use('/invoice' , invoiceRoute);
+app.use('/notifications' , notificationsRoute);
 
 mongoose
     .connect(process.env.MONGO_URI)

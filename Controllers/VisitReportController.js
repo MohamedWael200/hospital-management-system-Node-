@@ -15,13 +15,12 @@ const createVisitReport = async (req, res) => {
         if (!appointmentId || !diagnosis || !notes || !doctorId || !patientId) {
             return res.status(400).json({ message: "All fields are required" });
         }
-
         const doctor = await Doctor.findById(doctorId).populate("userId", "name");
         const doctorName = doctor.userId.name;
 
         const patient = await Patient.findById(patientId).populate("userId", "name");
         const patientName = patient.userId.name;
-
+        console.log("P" , patient)
         const appointment = await Appointment.findById(appointmentId);
 
         // إنشاء ملف PDF

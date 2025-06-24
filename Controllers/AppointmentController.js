@@ -2,6 +2,7 @@ const Appointment = require("../models/Appointment");
 const Doctor = require("../models/Doctor")
 const validator = require("validator");
 const sanitize = require("sanitize-html");
+const Notification = require("../models/Notification");
 
 
 const createAppointment = async (req, res) => {
@@ -15,7 +16,7 @@ const createAppointment = async (req, res) => {
 
         if (!validator.isISO8601(date)) {
             return res.status(400).json({
-                message: "Invalid date format. Use ISO format like 2025-06-01 or 2025-06-01T14:00:00Z",
+                message: "Invalid date format. Use ISO format like 2025-06-01T14:00:00Z",
             });
         }
 
@@ -34,17 +35,31 @@ const createAppointment = async (req, res) => {
 
         await newAppointment.save();
 
+        // ✅ إرسال إشعار للدكتور
+        const doctor = await Doctor.findById(doctorId).populate("userId");
+        if (doctor && doctor.userId) {
+            const notification = new Notification({
+                receiverId: doctor.userId._id,
+                content: `📅 You have a new appointment scheduled at ${new Date(date).toLocaleString()}`,
+                type: "appointment",
+            });
+
+            await notification.save();
+        }
+
         return res.status(200).json({
             message: "Appointment created successfully",
             data: newAppointment,
         });
     } catch (error) {
+        console.error("Appointment creation error:", error);
         res.status(500).json({
             message: "Creating appointment failed",
             error: error.message,
         });
     }
 };
+
 
 const GetAllAppointment = async (req, res) => {
     try {
